@@ -38,8 +38,12 @@ async def client(db_session: AsyncSession):
 
 @pytest.fixture
 async def auth_client(client: AsyncClient):
-    await client.post("/auth/register", json={"username": "testuser", "password": "senha123"})
-    r = await client.post("/auth/token", data={"username": "testuser", "password": "senha123"})
+    await client.post(
+        "/users/register", json={"username": "testuser", "password": "senha123"}
+    )
+    r = await client.post(
+        "/users/token", data={"username": "testuser", "password": "senha123"}
+    )
     token = r.json()["access_token"]
     client.headers.update({"Authorization": f"Bearer {token}"})
     return client
